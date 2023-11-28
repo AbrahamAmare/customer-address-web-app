@@ -1,15 +1,12 @@
-import {
-  createUser,
-  deleteUser,
-  getUser,
-  getUsers,
-  updateUser,
-} from "../controllers/users.controller";
-import validate from "../middleware/schema-validator";
-import express from "express";
-import requireAuth from "../middleware/require-auth";
-const router = express.Router();
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const users_controller_1 = require("../controllers/users.controller");
+const express_1 = __importDefault(require("express"));
+const require_auth_1 = __importDefault(require("../middleware/require-auth"));
+const router = express_1.default.Router();
 /**
  * @swagger
  * components:
@@ -63,7 +60,6 @@ const router = express.Router();
  *                  description: cookie expiration date
  *
  */
-
 /**
  * @swagger
  * tags:
@@ -84,7 +80,7 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Users'
  *
  */
-router.route("/").get(requireAuth, getUsers).post(createUser);
-router.route("/:userId").get(getUser).put(updateUser).delete(deleteUser);
-
-export default router;
+router.route("/").get(require_auth_1.default, users_controller_1.getUsers).post(users_controller_1.createUser);
+router.route("/:userId").get(users_controller_1.getUser).put(users_controller_1.updateUser).delete(users_controller_1.deleteUser);
+exports.default = router;
+//# sourceMappingURL=user.route.js.map

@@ -1,5 +1,5 @@
 import { Schema, Document, Model, model } from "mongoose";
-import { boolean, z } from "zod";
+import { z } from "zod";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
@@ -71,6 +71,9 @@ const UserSchema = new Schema<UserDocument>(
       type: String,
     },
 
+    gender: {
+      type: String,
+    },
     email: {
       type: String,
       required: [true, "Email is a required field."],

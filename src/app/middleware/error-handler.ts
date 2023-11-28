@@ -40,11 +40,13 @@ const productionErrorHandler = (
     return res.status(error.statusCode).json({
       status: error.status,
       message: error.message,
+      errors: error.errors,
     });
   } else {
     return res.status(500).json({
       status: "Failed",
       message: "Something unexpected went wrong... ",
+      errors: error.errors,
     });
   }
 };
@@ -74,7 +76,6 @@ const schemaValidationError = (error: any) => {
     return { field: val.path, message: val.message };
   });
   const msg = "One or more validation error has occurred";
-  console.log(errors);
   return new ErrorResponse(422, msg, errors);
 };
 

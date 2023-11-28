@@ -5,8 +5,7 @@ import { Request, Response, NextFunction } from "express";
 
 const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const sessionToken = req.cookies["user_session"];
-    console.log(sessionToken);
+    const sessionToken = req.cookies["ec-book-cookie"];
     if (!sessionToken) {
       throw new ErrorResponse(401, "Please login to continue ...");
     }

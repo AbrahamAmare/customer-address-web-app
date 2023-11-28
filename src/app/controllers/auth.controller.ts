@@ -61,7 +61,6 @@ export const signUp = tryCatch(async (req: Request, res: Response) => {
 
 export const signIn = tryCatch(async (req: Request, res: Response) => {
   await SignInSchema.parseAsync(req.body);
-
   const signIn: SignInType = req.body;
   const user = await User.findOne({ email: signIn.email });
   if (!user || !(await user.comparePassword(user.password, signIn.password))) {
@@ -88,10 +87,13 @@ export const signIn = tryCatch(async (req: Request, res: Response) => {
   user.auth = auth;
   user.save();
 
-  res.cookie("user_session", sessionToken, { maxAge: expires });
+  res.cookie("ec-book-cookie", sessionToken, { maxAge: expires });
   return res.status(200).json(user);
 });
 
+export const signOut = tryCatch(async (req: Request, res: Response) => {
+  // req.session.destroy();
+});
 export const changePassword = tryCatch(async (req: Request, res: Response) => {
   let userId = req.params.userId;
   await ChangePasswordSchema.parseAsync(req.body);
@@ -147,7 +149,9 @@ export const changeEmail = tryCatch(async (req: Request, res: Response) => {
 });
 
 export const forgotPassword = tryCatch(async (req: Request, res: Response) => {
-  const user = await User.findOne({ email: req.body.email });
+  console.warn("Printing", req.body.payload);
+  const { email } = req.body.payload;
+  const user = await User.findOne({ email: email });
   if (!user) {
     throw new ErrorResponse(404, "User with the given email does not exist");
   }
@@ -155,9 +159,7 @@ export const forgotPassword = tryCatch(async (req: Request, res: Response) => {
   const resetToken = user.createResetPasswordToken();
   await user.save();
 
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/auth/reset-password/${resetToken}`;
+  const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
 
   const html = `<h1>Hi, This link below is to reset your password<h1>
     <a href=${resetUrl}>Reset Password </a>`;
@@ -170,7 +172,7 @@ export const forgotPassword = tryCatch(async (req: Request, res: Response) => {
   await sendEmail(options);
   return res.status(200).json({
     status: "Success",
-    message: "A link to reset your has been sent to your email",
+    message: "A link to reset your password has been sent to your email",
   });
 });
 
