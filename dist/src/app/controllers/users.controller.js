@@ -24,6 +24,7 @@ exports.getUsers = (0, tryCatch_utils_1.default)(async (req, res) => {
         paging: {
             totalPages: Math.ceil(count / take),
             page: pageParsed,
+            pageSize: take,
         },
     });
 });
@@ -54,6 +55,7 @@ exports.createUser = (0, tryCatch_utils_1.default)(async (req, res) => {
 });
 exports.updateUser = (0, tryCatch_utils_1.default)(async (req, res) => {
     let userId = req.params.userId;
+    console.log(req.body);
     await update_user_schema_1.UpdateUserSchema.parseAsync(req.body);
     const update = req.body;
     const user = await user_model_1.User.findById(userId);

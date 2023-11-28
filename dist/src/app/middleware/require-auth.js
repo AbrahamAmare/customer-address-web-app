@@ -8,7 +8,6 @@ const error_response_1 = __importDefault(require("../utils/error-response"));
 const requireAuth = async (req, res, next) => {
     try {
         const sessionToken = req.cookies["ec-book-cookie"];
-        console.log(sessionToken);
         if (!sessionToken) {
             throw new error_response_1.default(401, "Please login to continue ...");
         }
